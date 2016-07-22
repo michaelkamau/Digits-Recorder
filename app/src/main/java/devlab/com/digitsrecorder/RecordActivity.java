@@ -39,16 +39,23 @@ public class RecordActivity extends AppCompatActivity {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss");
     private static final int NOTICE_RECORD = 0;
 
+    // track the current digits
+    private int currentDigit = 0;
+
     private Button actionButton;
-    private ImageButton newTimestamp;
-    private EditText editText;
+    private Button nextDigitButton;
+    private TextView textViewDigit;
+
+   // private ImageButton newTimestamp;
+   // private EditText editText;
+
     private String filename;
     File baseFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/RawAudioRecordings");
 
     private ProgressBar saving;
-    private Spinner spinner;
-    private View startedRecording;
-    private TextView startedRecordingTime;
+   // private Spinner spinner;
+  //  private View startedRecording;
+  //  private TextView startedRecordingTime;
 
     private AlertDialog dialog;
 
@@ -69,6 +76,10 @@ public class RecordActivity extends AppCompatActivity {
 
         // set up GUI references
         actionButton = (Button) findViewById(R.id.btnRecord);
+        nextDigitButton = (Button) findViewById(R.id.btnNextNumber);
+        textViewDigit = (TextView) findViewById(R.id.textViewDigit);
+        textViewDigit.setText(new Integer(currentDigit).toString());
+
         //newTimestamp = (ImageButton) findViewById(R.id.newTimestamp);
         //editText = (EditText) findViewById(R.id.editText);
         saving = (ProgressBar) findViewById(R.id.saving);
@@ -108,13 +119,55 @@ public class RecordActivity extends AppCompatActivity {
 
                 // if we're already recording... start saving
                 if (isListening) {
+                    nextDigitButton.setEnabled(true);
                     endRecording();
                 } else {
+                    nextDigitButton.setEnabled(false);
                     beginRecording();
                 }
             }
 
         });
+
+        nextDigitButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                nextDigitPrompt(currentDigit);
+                currentDigit = getNextDigit(currentDigit);
+            }
+        });
+    }
+
+    /**
+     * Updates the prompt that directs user on which digit to say.
+     */
+    private void nextDigitPrompt(int currentDigit){
+        int nextDigit = getNextDigit(currentDigit);
+        String[] nums = {
+                "Sufuri",
+                "Moja",
+                "Mbili",
+                "Tatu",
+                "Nne",
+                "Tano",
+                "Sita",
+                "Saba",
+                "Nane",
+                "Tisa"
+        };
+        textViewDigit.setText(nums[currentDigit] + " " + new Integer(this.currentDigit).toString());
+    }
+    /**
+     * Returns an int between 0 and 9.
+     * @param currentDigit
+     * @return
+     */
+    private int getNextDigit(int currentDigit){
+        int nextDigit = currentDigit + 1;
+        if (nextDigit > 9){
+            nextDigit = 0;
+        }
+        return nextDigit;
     }
 
     /**
@@ -178,7 +231,7 @@ public class RecordActivity extends AppCompatActivity {
         }
 
         // check that the user's supplied a file name
-       //TODO: remove this->> filename = editText.getText().toString();
+       // filename = editText.getText().toString();
 
         filename = "raw_audio_" + System.currentTimeMillis() ;
         if (filename.equals("") || filename == null) {
@@ -331,7 +384,7 @@ public class RecordActivity extends AppCompatActivity {
 
             byte[] tempBuffer = new byte[bufferSize];
 
-            // TODO: Use baseDir
+
             String sdDirectory = baseFolder.getAbsolutePath();
             outFile = new File(sdDirectory + "/" + filename);
             if (outFile.exists())
