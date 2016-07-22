@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Digits Recorder</string>
+    <string name="strIntro">Speak the digit below, (in Kiswahili of course!):</string>
+</resources>
