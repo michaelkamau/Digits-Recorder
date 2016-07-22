@@ -78,7 +78,8 @@ public class RecordActivity extends AppCompatActivity {
         actionButton = (Button) findViewById(R.id.btnRecord);
         nextDigitButton = (Button) findViewById(R.id.btnNextNumber);
         textViewDigit = (TextView) findViewById(R.id.textViewDigit);
-        textViewDigit.setText(new Integer(currentDigit).toString());
+        //textViewDigit.setText(new Integer(currentDigit).toString());
+        nextDigitPrompt(currentDigit);
 
         //newTimestamp = (ImageButton) findViewById(R.id.newTimestamp);
         //editText = (EditText) findViewById(R.id.editText);
@@ -133,7 +134,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 nextDigitPrompt(currentDigit);
-                currentDigit = getNextDigit(currentDigit);
+                //currentDigit = getNextDigit(currentDigit);
             }
         });
     }
@@ -155,7 +156,8 @@ public class RecordActivity extends AppCompatActivity {
                 "Nane",
                 "Tisa"
         };
-        textViewDigit.setText(nums[currentDigit] + " " + new Integer(this.currentDigit).toString());
+        this.currentDigit = nextDigit;
+        textViewDigit.setText(nums[nextDigit]);
     }
     /**
      * Returns an int between 0 and 9.
@@ -233,7 +235,7 @@ public class RecordActivity extends AppCompatActivity {
         // check that the user's supplied a file name
        // filename = editText.getText().toString();
 
-        filename = "raw_audio_" + System.currentTimeMillis() ;
+        filename = new Integer(currentDigit).toString() + "_raw_audio_" + System.currentTimeMillis() ;
         if (filename.equals("") || filename == null) {
             showDialog("Enter a file name", "Please give your file a name. It's the least it deserves.");
             return;
