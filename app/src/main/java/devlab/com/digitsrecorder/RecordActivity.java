@@ -69,7 +69,7 @@ public class RecordActivity extends AppCompatActivity {
         actionButton = (Button) findViewById(R.id.btnRecord);
         //newTimestamp = (ImageButton) findViewById(R.id.newTimestamp);
         //editText = (EditText) findViewById(R.id.editText);
-        //saving = (ProgressBar) findViewById(R.id.saving);
+        saving = (ProgressBar) findViewById(R.id.saving);
         //spinner = (Spinner) findViewById(R.id.spinner);
         //startedRecording = findViewById(R.id.startedRecording);
         //startedRecordingTime = (TextView)findViewById(R.id.startedRecordingTime);
@@ -85,7 +85,7 @@ public class RecordActivity extends AppCompatActivity {
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         // add GUI functionality
-       // saving.setVisibility(View.GONE);
+        saving.setVisibility(View.GONE);
        // editText.setSingleLine(true);
 
 //        newTimestamp.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +126,7 @@ public class RecordActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        startedRecording.setVisibility(View.GONE);
+                       // startedRecording.setVisibility(View.GONE);
                         actionButton.setEnabled(false);
                         actionButton.setText("Saving...");
                         saving.setVisibility(View.VISIBLE);
@@ -148,8 +148,8 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         actionButton.setEnabled(true);
-                        editText.setEnabled(true);
-                        newTimestamp.setEnabled(true);
+//                        editText.setEnabled(true);
+//                        newTimestamp.setEnabled(true);
                         actionButton.setText("Start recording");
                         saving.setVisibility(View.GONE);
                     }
@@ -228,9 +228,9 @@ public class RecordActivity extends AppCompatActivity {
         s.start();
         Thread t = new Thread(new Capture());
         t.start();
-        startedRecordingTime.setText(dateFormat.format(new Date()));
-        startedRecording.setVisibility(View.VISIBLE);
-        setNotification();
+//        startedRecordingTime.setText(dateFormat.format(new Date()));
+  //      startedRecording.setVisibility(View.VISIBLE);
+//        setNotification();
     }
 
     private void setNotification() {
