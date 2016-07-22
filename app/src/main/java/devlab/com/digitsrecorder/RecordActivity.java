@@ -43,6 +43,8 @@ public class RecordActivity extends AppCompatActivity {
     private ImageButton newTimestamp;
     private EditText editText;
     private String filename;
+    File baseFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/RawAudioRecordings");
+
     private ProgressBar saving;
     private Spinner spinner;
     private View startedRecording;
@@ -177,7 +179,8 @@ public class RecordActivity extends AppCompatActivity {
 
         // check that the user's supplied a file name
        //TODO: remove this->> filename = editText.getText().toString();
-        filename = "raw_audio";
+
+        filename = "raw_audio_" + System.currentTimeMillis() ;
         if (filename.equals("") || filename == null) {
             showDialog("Enter a file name", "Please give your file a name. It's the least it deserves.");
             return;
@@ -187,8 +190,10 @@ public class RecordActivity extends AppCompatActivity {
         }
 
         // ask if file should be overwritten
-        //TODO: Create a directory to store the file.
-        File userFile = new File(Environment.getExternalStorageDirectory() + "/" + filename);
+        if (!baseFolder.exists()){
+            baseFolder.mkdir();
+        }
+        File userFile = new File(baseFolder.getAbsolutePath() + "/" + filename);
         if (userFile.exists()) {
             AlertDialog.Builder builder = new AlertDialog.Builder(RecordActivity.this);
             builder.setTitle("File already exists").setMessage(
@@ -326,7 +331,8 @@ public class RecordActivity extends AppCompatActivity {
 
             byte[] tempBuffer = new byte[bufferSize];
 
-            String sdDirectory = Environment.getExternalStorageDirectory().toString();
+            // TODO: Use baseDir
+            String sdDirectory = baseFolder.getAbsolutePath();
             outFile = new File(sdDirectory + "/" + filename);
             if (outFile.exists())
                 outFile.delete();
